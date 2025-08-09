@@ -1,0 +1,1 @@
+export { AddressBookIcon } from './AddressBook'

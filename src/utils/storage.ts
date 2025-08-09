@@ -1,0 +1,2 @@
+export const getloggedInUserDetails = () => JSON.parse(localStorage.getItem('userDetails') || 'null')
+export const setloggedInUserDetails = (d: any) => localStorage.setItem('userDetails', JSON.stringify(d))
