@@ -7,7 +7,7 @@ import { Contacts } from "./modules/Contacts"
 import { Home } from "./modules/Home"
 import { Login } from "./modules/Login"
 import { ScreenSaver } from "./modules/ScreenSaver"
-import { Background } from "./styled"
+import { Background } from "./styled/layout"
 
 function App() {
   const { db, setDb } = React.useContext(AppContext)

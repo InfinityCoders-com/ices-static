@@ -1,33 +1,44 @@
-import React from 'react';
+import React from "react"
 import styled from "styled-components"
 import { Flex } from "../../UI Library/Components/Layout/Flex"
 import { createLabelWithEmptyValues } from "../../utils/string"
-
+import { DetailSpan, DetailName, Label } from "../../styled/ResponsiveTexts"
+import { containerBottomSpacing, containerHSpacing, containerSpacing, containerVSpacing } from "../../styled/composeStyled"
+import { containerBottomMargin, containerTopMargin, containerTopMarginNegative, containerVMargin } from "../../styled/composeMargin"
 
 export interface Contact {
   [key: string]: string
 }
 
 interface Props {
-  contact: Contact | undefined;
+  contact: Contact | undefined
 }
 
-
 const DetailsPane = styled(Flex).attrs({ flexDirection: "column" })`
-  padding: 2rem;
+  flex: 1 1 70%;
   width: 70%;
   height: 100%;
   overflow: auto;
   color: #f4f4f6;
   position: relative;
+  ${containerHSpacing}
+  ${containerBottomSpacing}
 `
 
-const ContactHeader = styled.div`
-  display: flex;
-  align-items: center;
+const AppName = styled.div`
+  font-size: 24px;
+  font-weight: 300;
+  position: sticky;
+  top: 0px;
+  background: #2b2b2d;
+  ${containerVSpacing}
+  ${containerBottomMargin}
+  ${containerTopMarginNegative}
+`
+
+const ContactHeader = styled(Flex).attrs({ alignItems: "center" })`
   gap: 24px;
-  margin-top: 12px;
-  margin-bottom: 50px;
+  ${containerVMargin}
 `
 
 const ContactImage = styled.div`
@@ -47,20 +58,18 @@ const ContactName = styled.h2`
   margin: 0;
 `
 
-const ContactGroup = styled(Flex).attrs({ flexGap: 16 })`
-  strong {
-    font-size: 14px;
-    font-weight: 200;
-    line-height: 20px;
-    min-width: 200px;
-  }
-  span {
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 24px;
-  }
-  margin-top: 8px;
+const ContactGroupContainer = styled(Flex).attrs({ flexDirection: "column" })`
+  ${containerTopMargin}
 `
+  
+const LabelContactGroup = styled(Label)`
+  ${containerTopMargin}
+`
+
+const ContactGroup = styled(Flex).attrs({ flexGap: 16 })`
+  ${containerTopMargin}
+`
+
 export const ContactDetails: React.FC<Props> = ({ contact }) => {
   if (!contact) {
     return (
@@ -124,7 +133,7 @@ export const ContactDetails: React.FC<Props> = ({ contact }) => {
       label: [city?.trim() || "", "Address"].join(" "),
       details: {
         address: { label: "Address", value: createLabelWithEmptyValues([addressLine1, addressLine2, addressLine3]) },
-        city: { label: "City", value: createLabelWithEmptyValues([addressLine1, addressLine2, addressLine3]) },
+        city: { label: "City", value: createLabelWithEmptyValues([city]) },
         state: { label: "state", value: createLabelWithEmptyValues(state) },
         pincode: { label: "Postal Code", value: createLabelWithEmptyValues(pincode) }
       }
@@ -163,28 +172,24 @@ export const ContactDetails: React.FC<Props> = ({ contact }) => {
   }
   return (
     <DetailsPane>
-      <div
-        style={{ marginTop: -35, fontSize: 24, fontWeight: 300, marginBottom: 24, position: "sticky", top: -35, padding: '20px 0', background: "#2b2b2d" }}
-      >
-        Contacts
-      </div>
-      <Flex flexDirection="column" flexGap={4}>
+      <AppName>Contacts</AppName>
+      <Flex flexDirection="column" flexGap={4} style={{ overflowX: "hidden" }}>
         <ContactHeader>
-          <ContactImage>{contact?.firstName?.charAt(0) || ''}</ContactImage>
-          <ContactName>{`${contact.firstName || ""} ${contact.lastName || ""}`}</ContactName>
+          <ContactImage>{contact?.firstName?.charAt(0) || ""}</ContactImage>
+          <ContactName>{createLabelWithEmptyValues([prefix, firstName, middleName, lastName])}</ContactName>
         </ContactHeader>
         {Object.entries(details).map(([groupKey, group]: any) => (
-          <Flex flexDirection="column">
-            <label>{group.label}</label>
+          <ContactGroupContainer key={groupKey}>
+            <LabelContactGroup>{group.label}</LabelContactGroup>
             {Object.entries(group.details).map(([key, contact]: any) => (
-              <ContactGroup>
-                <strong>{contact.label}:</strong>
-                <span>{contact.value}</span>
+              <ContactGroup key={key}>
+                <DetailName>{contact.label}:</DetailName>
+                <DetailSpan>{contact.value}</DetailSpan>
               </ContactGroup>
             ))}
-          </Flex>
+          </ContactGroupContainer>
         ))}
       </Flex>
     </DetailsPane>
-  );
-};
+  )
+}

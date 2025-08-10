@@ -57,7 +57,7 @@ const ErrorText = styled.p`
   color: #db5f4c;
   font-size: 12px;
   text-align: center;
-  line-height: 18px;
+  line-height: 140%;
   font-family: Lato;
 `
 

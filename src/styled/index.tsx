@@ -1,12 +1,5 @@
 import styled from 'styled-components'
 
-export const Background = styled.div`
-  height: 100vh;
-  overflow: hidden;
-  background: #222224;
-  width: 100vw;
-`
-
 export const Container = styled.div`
   display: flex;
   height: 100vh;
