@@ -8,6 +8,7 @@ import { Home } from "./modules/Home"
 import { Login } from "./modules/Login"
 import { ScreenSaver } from "./modules/ScreenSaver"
 import { Background } from "./styled/layout"
+import { Expenses } from "./modules/Expenses"
 
 function App() {
   const { db, setDb } = React.useContext(AppContext)
@@ -35,8 +36,8 @@ function App() {
     "PAN Card": 100
   }
   async function fetchDbData() {
-    const response = await getDbSheetData()
-    setDb(response)
+    // const response = await getDbSheetData()
+    // setDb(response)
   }
 
   const onActive = React.useCallback(() => {
@@ -78,6 +79,7 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/expenses" element={<Expenses />} />
           <Route path="/contacts" element={<Contacts />} />
         </Routes>
       </BrowserRouter>
