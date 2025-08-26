@@ -16,28 +16,9 @@ function App() {
   const userLastActiveAt = React.useRef<any>(null)
   const [data, setData] = React.useState<any>({ data: null, fields: null })
 
-  const tableWidth: any = {
-    "#": 50,
-    Bank: 200,
-    "Account Owner": 200,
-    "Account Type": 200,
-    GPay: 200,
-    "Account No.": 200,
-    IFSC: 200,
-    CVV: 200,
-    Addr1: 200,
-    Addr2: 200,
-    Addr3: 200,
-    City: 200,
-    State: 200,
-    pincode: 200,
-    "Phone number": 200,
-    Email: 200,
-    "PAN Card": 100
-  }
   async function fetchDbData() {
-    // const response = await getDbSheetData()
-    // setDb(response)
+    const response = await getDbSheetData()
+    setDb(response)
   }
 
   const onActive = React.useCallback(() => {
