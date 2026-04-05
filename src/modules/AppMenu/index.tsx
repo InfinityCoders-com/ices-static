@@ -5,6 +5,8 @@ import { smallSize, mediumSize, largeSize, gap } from "../../constants/iconsSize
 import { AddressBookIcon, HouseIcon } from "../../Icons"
 import { useNavigate } from "react-router-dom"
 import { MoneyWavy } from "../../MoneyWavy"
+import CalendarIcon from "../../Icons/PNGs/thin/calendar-thin.png"
+import AtombergLogo from "../../Icons/PNGs/atomberg-logo.png"
 
 const MenuIconContainer = styled(Flex).attrs({
   flexDirection: "column",
@@ -25,7 +27,9 @@ const MenuIcons = styled(Flex).attrs({ alignItems: "center", justifyContent: "ce
   box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
   transition: 0.6s ease-in;
   &:active {
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1), inset 0 0 12px 2px rgba(252, 252, 252, 0.1);
+    box-shadow:
+      0 0 2px 1px rgba(0, 0, 0, 0.1),
+      inset 0 0 12px 2px rgba(252, 252, 252, 0.1);
     transition: 0.2s ease-out;
   }
 `
@@ -42,6 +46,12 @@ export function AppMenu() {
       </MenuIcons>
       <MenuIcons size="s" onClick={() => navigate("/expenses")}>
         <MoneyWavy size={18} color="#f4f4f6" />
+      </MenuIcons>
+      <MenuIcons size="s" onClick={() => navigate("/calendar")}>
+        <img src={CalendarIcon} height={18} width={18} />
+      </MenuIcons>
+      <MenuIcons size="s" onClick={() => navigate("/atomberg")}>
+        <img src={AtombergLogo} height={18} width={18} />
       </MenuIcons>
     </MenuIconContainer>
   )

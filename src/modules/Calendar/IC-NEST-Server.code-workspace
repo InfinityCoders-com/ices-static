@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../../IC-NEST-Server"
+		},
+		{
+			"path": "../../../../icdoc"
+		},
+		{
+			"path": "../../../../node-scripts"
+		}
+	],
+	"settings": {}
+}

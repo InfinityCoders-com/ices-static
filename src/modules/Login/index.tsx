@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-import { AppContext } from '../../contexts/AppContext'
-import { doesUserNameExist, getUserDetails, isGuestAuthorizationAllowed, isLoginValid, isUserNameEnabled } from '../../selectors/db'
-import { setloggedInUserDetails } from '../../utils/storage'
-import { Input } from '../../styled'
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import styled from "styled-components"
+import { login } from "../../Apis/authApis"
+import { IAxiosResponse } from "../../Apis/axios"
+import { getUserDetails } from "../../Apis/UserApis"
+import { AppContext } from "../../contexts/AppContext"
+import { isGuestAuthorizationAllowed } from "../../selectors/db"
+import { Input } from "../../styled"
 
 const Container = styled.div`
   display: flex;
@@ -36,7 +38,7 @@ const LoginInput = styled(Input)`
   font-size: 1rem;
 `
 
-const Button = styled.button<{ variant?: 'primary' | 'guest' }>`
+const Button = styled.button<{ variant?: "primary" | "guest" }>`
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
@@ -45,11 +47,11 @@ const Button = styled.button<{ variant?: 'primary' | 'guest' }>`
   cursor: pointer;
   margin-top: 0.5rem;
   outline: none;
-  background: ${(props) => (props.variant === 'guest' ? '#eee' : '#1c1c1c')};
-  color: ${(props) => (props.variant === 'guest' ? '#333' : '#f4f4f6')};
+  background: ${(props) => (props.variant === "guest" ? "#eee" : "#1c1c1c")};
+  color: ${(props) => (props.variant === "guest" ? "#333" : "#f4f4f6")};
 
   &:hover {
-    background: ${(props) => (props.variant === 'guest' ? '#ddd' : '#1c1c1c')};
+    background: ${(props) => (props.variant === "guest" ? "#ddd" : "#1c1c1c")};
   }
 `
 
@@ -62,9 +64,9 @@ const ErrorText = styled.p`
 `
 
 export const Login: React.FC = () => {
-  const [userName, setUserName] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
   const { db, setDb } = React.useContext(AppContext)
   const navigate = useNavigate()
 
@@ -75,35 +77,31 @@ export const Login: React.FC = () => {
     return false
   }, [db.allTabData])
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!userName || !password) {
-      setError('UserName and / or password are required.')
-      return
-    }
-    if (!doesUserNameExist(db, userName)) {
-      setError('Username does not exist.')
-      return
-    }
-    if (!isUserNameEnabled(db, userName)) {
-      setError('User is disabled.')
-      return
-    }
-    if (isLoginValid(db, userName, password)) {
-      const { id, role, userName: user } = getUserDetails(db, userName, password)
-      setloggedInUserDetails({ id, role, user })
-      navigate('/')
-    } else {
-      setError('Username and / or Password are invalid.')
+      setError("UserName and / or password are required.")
       return
     }
 
-    setError('')
-    console.log('Logging in with', { userName, password })
-    // Add actual login logic here
+    const response = await login(userName, password)
+    console.log(response, "response")
+    if (response.isSuccess) {
+      const userDetails: IAxiosResponse<any> = await getUserDetails()
+      console.log(userDetails, "userDetails")
+      if (userDetails.isSuccess && userDetails.data?.length > 0) {
+        // const { id, role, userName: user } = getUserDetails(db, userName, password)
+        // setloggedInUserDetails({ id, role, user })
+        navigate("/")
+      } else {
+        setError("Username and / or Password are invalid.")
+        return
+      }
+    }
+    setError("")
   }
 
   const handleGuestLogin = () => {
-    console.log('Logging in as guest')
+    console.log("Logging in as guest")
     // Guest login logic
   }
 
@@ -119,7 +117,7 @@ export const Login: React.FC = () => {
             Continue as Guest
           </Button>
         ) : null}
-        <ErrorText>{error || ''}</ErrorText>
+        <ErrorText>{error || ""}</ErrorText>
       </Card>
     </Container>
   )

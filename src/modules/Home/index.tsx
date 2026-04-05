@@ -4,9 +4,10 @@ import styled from "styled-components"
 import { AppContext } from "../../contexts/AppContext"
 import { Flex } from "../../UI Library/Components/Layout/Flex"
 import { getloggedInUserDetails } from "../../utils/storage"
-import { smallSize, mediumSize, largeSize, gap  } from '../../constants/iconsSizes'
+import { smallSize, mediumSize, largeSize, gap } from "../../constants/iconsSizes"
 import { AppMenu } from "../AppMenu"
 import { AppsContainer, PageContainer } from "../../styled/layout"
+import axios from "axios"
 
 const Icons = styled(Flex).attrs({ alignItems: "center", justifyContent: "center" })<{ size: any }>`
   background: #222224;
